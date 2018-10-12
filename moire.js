@@ -1,3 +1,4 @@
+let patternType = 0;
 let staticPattern;
 let movingPattern;
 
@@ -9,9 +10,10 @@ function init() {
     window.addEventListener("resize", resizeCanvas);
     resizeCanvas();
 
-    staticPattern = getRandomPattern(context);
-    movingPattern = getRandomPattern(context);
+    staticPattern = getPattern(context);
+    movingPattern = getPattern(context);
 
+    listenForClick(context);
     listenForDrag();
     listenForScale();
 
@@ -25,13 +27,23 @@ function renderScene() {
     requestAnimationFrame(renderScene)
 }
 
-function getRandomPattern(context) {
-    let n = Math.random();
-    if(n < 0.5) {
+function getPattern(context) {
+    console.log("pattern: "+patternType);
+    switch(patternType) {
+        case 0:
         return new Circle(context);
-    } else {
-        return new Circle(context);
+        case 1:
+        return new Curves(context);
     }
+}
+
+function listenForClick(context) {
+    document.addEventListener('dblclick', function(e) {
+        patternType = (patternType + 1) % 2;
+        context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        staticPattern = getPattern(context);
+        movingPattern = getPattern(context);
+    });
 }
 
 function listenForScale() {
