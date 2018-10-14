@@ -34,12 +34,14 @@ function getPattern(context) {
         return new Circle(context);
         case 1:
         return new Curves(context);
+        case 2:
+        return new Squares(context);
     }
 }
 
 function listenForClick(context) {
     document.addEventListener('dblclick', function(e) {
-        patternType = (patternType + 1) % 2;
+        patternType = (patternType + 1) % 3;
         context.clearRect(0, 0, window.innerWidth, window.innerHeight);
         staticPattern = getPattern(context);
         movingPattern = getPattern(context);
